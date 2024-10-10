@@ -1,22 +1,24 @@
 "use client";
 
+import { useAppDispatch, useAppSelector } from "@/redux";
+import { setIsSidebarCollapsed } from "@/state";
 import {
-    AlertCircle,
-    AlertOctagon,
-    AlertTriangle,
-    Briefcase,
-    ChevronDown,
-    ChevronUp,
-    Home,
-    Layers3,
-    LockIcon,
-    LucideIcon,
-    Search,
-    Settings,
-    ShieldAlert,
-    User,
-    Users,
-    X,
+  AlertCircle,
+  AlertOctagon,
+  AlertTriangle,
+  Briefcase,
+  ChevronDown,
+  ChevronUp,
+  Home,
+  Layers3,
+  LockIcon,
+  LucideIcon,
+  Search,
+  Settings,
+  ShieldAlert,
+  User,
+  Users,
+  X,
 } from "lucide-react";
 // import Image from "next/image";
 import Link from "next/link";
@@ -27,10 +29,14 @@ const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
 
+  const isSidebarCollapsed = useAppSelector(state => state.global.isSidebarCollapsed);
+  const dispatch = useAppDispatch();
+
 //   const currentUserDetails = currentUser?.userDetails;
 
   const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl
     transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white
+    ${isSidebarCollapsed ? "w-0 hidden" : "w-64"}
   `;
 
   return (
@@ -41,16 +47,16 @@ const Sidebar = () => {
           <div className="text-xl font-bold text-gray-800 dark:text-white">
             Howard Software
           </div>
-          {/* {isSidebarCollapsed ? null : ( */}
+          {isSidebarCollapsed ? null : (
             <button
               className="py-3"
               onClick={() => {
-                // dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
+                dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
               }}
             >
               <X className="h-6 w-6 text-gray-800 hover:text-gray-500 dark:text-white" />
             </button>
-          {/* )} */}
+          )}
         </div>
         {/* TEAM */}
         <div className="flex items-center gap-5 border-y-[1.5px] border-gray-200 px-8 py-4 dark:border-gray-700">
@@ -141,6 +147,7 @@ const Sidebar = () => {
           </>
         )}
       </div>
+      {/* User Info */}
       <div className="z-10 mt-32 flex w-full flex-col items-center gap-4 bg-white px-8 py-4 dark:bg-black md:hidden">
         <div className="flex w-full items-center">
           <div className="align-center flex h-9 w-9 justify-center">

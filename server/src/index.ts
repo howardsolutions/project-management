@@ -5,6 +5,9 @@ import cors from "cors"
 import helmet from "helmet";
 import morgan from "morgan";
 
+// ROUTES import
+import projectRoutes from "./routes/projectRoute";
+
 // Config ENV
 dotenv.config()
 
@@ -30,7 +33,9 @@ app.use(morgan("common"));
 // ROUTES
 app.get("/", (req, res) => {
     res.send("This is default route")
-})
+});
+
+app.use("/projects", projectRoutes);
 
 // SERVER
 const PORT = process.env.PORT || 4000;

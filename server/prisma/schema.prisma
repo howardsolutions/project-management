@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -14,77 +15,67 @@ datasource db {
 }
 
 model User {
-  id                Int     @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   cognitoId         String  @unique
   username          String  @unique
   profilePictureUrl String?
   teamId            Int?
 
-  authoredTasks Task[] @relation("TaskAuthor")
-  assignedTasks Task[] @relation("TaskAssignee")
-
-  taskAssignment TaskAssignment[]
-  atttachments   Attachment[]
-  comments       Comment[]
-  team           Team?            @relation(fields: [teamId], references: [id])
+  authoredTasks   Task[]           @relation("TaskAuthor")
+  assignedTasks   Task[]           @relation("TaskAssignee")
+  taskAssignments TaskAssignment[]
+  attachments     Attachment[]
+  comments        Comment[]
+  team            Team?            @relation(fields: [teamId], references: [id])
 }
 
 model Team {
-  id                   Int    @id @default(autoincrement())
+  id                   Int           @id @default(autoincrement())
   teamName             String
   productOwnerUserId   Int?
-  productManagerUserId Int?
-
-  projectTeams ProjectTeam[]
-  user         User[]
+  projectManagerUserId Int?
+  projectTeams         ProjectTeam[]
+  user                 User[]
 }
 
 model Project {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  startDate   DateTime?
-  endDate     DateTime?
-
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  startDate    DateTime?
+  endDate      DateTime?
   tasks        Task[]
   projectTeams ProjectTeam[]
 }
 
 model ProjectTeam {
-  id        Int @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   teamId    Int
   projectId Int
-
-  team    Team    @relation(fields: [teamId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
+  team      Team    @relation(fields: [teamId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String?
-  status      String?
-  priority    String?
-  tags        String?
-
-  startDate DateTime?
-  dueDate   DateTime?
-  points    Int?
-
-  projectId Int
-
+  id             Int       @id @default(autoincrement())
+  title          String
+  description    String?
+  status         String?
+  priority       String?
+  tags           String?
+  startDate      DateTime?
+  dueDate        DateTime?
+  points         Int?
+  projectId      Int
   authorUserId   Int
   assignedUserId Int?
 
-  project Project @relation(fields: [projectId], references: [id])
-
-  author User @relation("TaskAuthor", fields: [authorUserId], references: [id])
-
-  assignee User? @relation("TaskAssignee", fields: [assignedUserId], references: [id])
-
-  taskAssigments TaskAssignment[]
-  attachments    Attachment[]
-  comments       Comment[]
+  project         Project          @relation(fields: [projectId], references: [id])
+  author          User             @relation("TaskAuthor", fields: [authorUserId], references: [id])
+  assignee        User?            @relation("TaskAssignee", fields: [assignedUserId], references: [id])
+  taskAssignments TaskAssignment[]
+  attachments     Attachment[]
+  comments        Comment[]
 }
 
 model TaskAssignment {
@@ -97,9 +88,9 @@ model TaskAssignment {
 }
 
 model Attachment {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   fileURL      String
-  fileName     String
+  fileName     String?
   taskId       Int
   uploadedById Int
 

@@ -2,6 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/redux";
 import { setIsSidebarCollapsed } from "@/state";
+import { useGetProjectsQuery } from "@/state/api";
 import {
   AlertCircle,
   AlertOctagon,
@@ -29,10 +30,14 @@ const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
 
-  const isSidebarCollapsed = useAppSelector(state => state.global.isSidebarCollapsed);
+  const { data: projects } = useGetProjectsQuery();
+
+  const isSidebarCollapsed = useAppSelector(
+    (state) => state.global.isSidebarCollapsed,
+  );
   const dispatch = useAppDispatch();
 
-//   const currentUserDetails = currentUser?.userDetails;
+  //   const currentUserDetails = currentUser?.userDetails;
 
   const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl
     transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white
@@ -67,7 +72,7 @@ const Sidebar = () => {
             height={40}
           /> */}
           <div>
-            <h3 className="text-md font-bold tracking-wide uppercase dark:text-gray-200">
+            <h3 className="text-md font-bold uppercase tracking-wide dark:text-gray-200">
               Howard TEAM
             </h3>
             <div className="mt-1 flex items-start gap-2">
@@ -99,7 +104,7 @@ const Sidebar = () => {
           )}
         </button>
         {/* PROJECTS LIST */}
-        {/* {showProjects &&
+        {showProjects &&
           projects?.map((project) => (
             <SidebarLink
               key={project.id}
@@ -107,7 +112,7 @@ const Sidebar = () => {
               label={project.name}
               href={`/projects/${project.id}`}
             />
-          ))} */}
+          ))}
 
         {/* PRIORITIES LINKS */}
         <button

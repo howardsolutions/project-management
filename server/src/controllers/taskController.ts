@@ -28,7 +28,7 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
 };
 
 
-export const createProject = async (req: Request, res: Response): Promise<void> => {
+export const createTask = async (req: Request, res: Response): Promise<void> => {
     const {
         title,
         description,
@@ -65,3 +65,26 @@ export const createProject = async (req: Request, res: Response): Promise<void> 
             .json({ message: `Error creating a task: ${error.message}` });
     }
 };
+
+
+export const updateTaskStatus = async (req: Request, res: Response): Promise<void> => {
+    const { taskId } = req.params;
+    const { status } = req.body;
+
+    try {
+        const updatedTask = await prisma.task.update({
+            where: {
+                id: Number(taskId)
+            },
+            data: {
+                status
+            },
+        });
+        res.status(200).json(updatedTask);
+    } catch (error: any) {
+        res
+            .status(500)
+            .json({ message: `Error updating a task: ${error.message}` });
+    }
+};
+

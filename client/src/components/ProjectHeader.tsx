@@ -1,4 +1,3 @@
-
 import {
   Clock,
   Filter,
@@ -28,7 +27,7 @@ const ProjectHeader = ({ activeTab, setActiveTab }: Props) => {
       <div className="pb-6 pt-6 lg:pb-4 lg:pt-8">
         <Header
           name="Product Design Development"
-          buttonComponent={
+          headerBtn={
             <button
               className="flex items-center rounded-md bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
               onClick={() => setIsModalNewProjectOpen(true)}
@@ -42,31 +41,17 @@ const ProjectHeader = ({ activeTab, setActiveTab }: Props) => {
       {/* TABS */}
       <div className="flex flex-wrap-reverse gap-2 border-y border-gray-200 pb-[8px] pt-2 dark:border-stroke-dark md:items-center">
         <div className="flex flex-1 items-center gap-2 md:gap-4">
-          <TabButton
-            name="Board"
-            icon={<Grid3x3 className="h-5 w-5" />}
-            setActiveTab={setActiveTab}
-            activeTab={activeTab}
-          />
-          <TabButton
-            name="List"
-            icon={<List className="h-5 w-5" />}
-            setActiveTab={setActiveTab}
-            activeTab={activeTab}
-          />
-          <TabButton
-            name="Timeline"
-            icon={<Clock className="h-5 w-5" />}
-            setActiveTab={setActiveTab}
-            activeTab={activeTab}
-          />
-          <TabButton
-            name="Table"
-            icon={<Table className="h-5 w-5" />}
-            setActiveTab={setActiveTab}
-            activeTab={activeTab}
-          />
+          {tabBtns.map((item) => (
+            <TabButton
+              key={item.name}
+              name={item.name}
+              icon={React.cloneElement(item.icon, { className: "h-5 w-5" })}
+              setActiveTab={setActiveTab}
+              activeTab={activeTab}
+            />
+          ))}
         </div>
+        {/* Filter, Share, SEARCH */}
         <div className="flex items-center gap-2">
           <button className="text-gray-500 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-gray-300">
             <Filter className="h-5 w-5" />
@@ -110,5 +95,24 @@ const TabButton = ({ name, icon, setActiveTab, activeTab }: TabButtonProps) => {
     </button>
   );
 };
+
+const tabBtns = [
+  {
+    name: "Board",
+    icon: <Grid3x3 />,
+  },
+  {
+    name: "List",
+    icon: <List />,
+  },
+  {
+    name: "Timeline",
+    icon: <Clock />,
+  },
+  {
+    name: "Table",
+    icon: <Table />,
+  },
+];
 
 export default ProjectHeader;

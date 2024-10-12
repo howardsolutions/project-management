@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 
 type Props = {
   name: string;
-  buttonComponent?: ReactNode;
+  headerBtn?: ReactNode;
   isSmallText?: boolean;
 };
 
-const Header = ({ name, buttonComponent, isSmallText = false }: Props) => {
+const Header = ({ name, headerBtn, isSmallText = false }: Props) => {
   return (
     <div className="mb-5 flex w-full items-center justify-between">
       <h1
@@ -14,7 +14,7 @@ const Header = ({ name, buttonComponent, isSmallText = false }: Props) => {
       >
         {name}
       </h1>
-      {buttonComponent}
+      {headerBtn}
     </div>
   );
 };

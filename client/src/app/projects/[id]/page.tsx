@@ -1,3 +1,6 @@
+"use client";
+
+import ProjectHeader from "@/components/ProjectHeader";
 import { useState } from "react";
 
 type ProjectPageProps = {
@@ -7,10 +10,14 @@ type ProjectPageProps = {
 function Project({ params }: ProjectPageProps) {
   const { id } = params;
 
-  const [activeTab, setActiveTab] = useState();
-  const [isModalOpen, setIsModalOpen] = useState();
+  const [activeTab, setActiveTab] = useState<string>("Board");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  return <div>Project</div>;
+  return (
+    <div>
+      <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+    </div>
+  );
 }
 
 export default Project;

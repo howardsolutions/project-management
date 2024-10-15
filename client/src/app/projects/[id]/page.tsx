@@ -4,6 +4,7 @@ import ProjectHeader from "@/components/ProjectHeader";
 import { useState } from "react";
 import BoardView from "../BoardView";
 import ListView from "../ListView";
+import TimelineView from "../TimelineView";
 
 type ProjectPageProps = {
   params: { id: string };
@@ -27,7 +28,12 @@ function Project({ params }: ProjectPageProps) {
       {activeTab === activeTabs.BOARD && (
         <BoardView id={id} setIsModalCreateNewTaskOpen={setIsModalOpen} />
       )}
-      {activeTab === activeTabs.LIST && <ListView id={id} setIsModalCreate />}
+      {activeTab === activeTabs.LIST && (
+        <ListView id={id} setIsModalNewTaskOpen={setIsModalOpen} />
+      )}
+      {activeTab === activeTabs.LIST && (
+        <TimelineView id={id} setIsModalNewTaskOpen={setIsModalOpen} />
+      )}
     </div>
   );
 }

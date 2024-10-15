@@ -5,17 +5,8 @@ import { useState } from "react";
 import BoardView from "../BoardView";
 import ListView from "../ListView";
 import TimelineView from "../TimelineView";
+import TableView from "../TableView";
 
-type ProjectPageProps = {
-  params: { id: string };
-};
-
-enum activeTabs {
-  BOARD = "Board",
-  LIST = "List",
-  TIMELINE = "Timeline",
-  TABLE = "Table",
-}
 function Project({ params }: ProjectPageProps) {
   const { id } = params;
 
@@ -31,11 +22,25 @@ function Project({ params }: ProjectPageProps) {
       {activeTab === activeTabs.LIST && (
         <ListView id={id} setIsModalNewTaskOpen={setIsModalOpen} />
       )}
-      {activeTab === activeTabs.LIST && (
+      {activeTab === activeTabs.TIMELINE && (
         <TimelineView id={id} setIsModalNewTaskOpen={setIsModalOpen} />
+      )}
+      {activeTab === activeTabs.TABLE && (
+        <TableView id={id} setIsModalNewTaskOpen={setIsModalOpen} />
       )}
     </div>
   );
 }
 
 export default Project;
+
+type ProjectPageProps = {
+  params: { id: string };
+};
+
+enum activeTabs {
+  BOARD = "Board",
+  LIST = "List",
+  TIMELINE = "Timeline",
+  TABLE = "Table",
+}

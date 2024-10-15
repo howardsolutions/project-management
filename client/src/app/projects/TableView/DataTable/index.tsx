@@ -17,15 +17,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isDarkMode: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isDarkMode,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -39,10 +42,23 @@ export function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow
+              key={headerGroup.id}
+              className={cn(
+                "border border-solid",
+                isDarkMode ? "#2d3135" : "e5e7eb",
+              )}
+            >
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    className={cn(
+                      isDarkMode
+                        ? "border-[#2d3135] bg-[#1d1f21] text-[#e5e7eb]"
+                        : "bg-white",
+                    )}
+                    key={header.id}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -61,17 +77,35 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className={cn(
+                  "border border-solid",
+
+                  isDarkMode
+                    ? "border-[#2d3135] bg-[#1d1f21] text-[#e5e7eb]"
+                    : "border-[#e5e7eb] bg-white",
+                )}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="border-none">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+            <TableRow
+              className={cn(
+                "border border-solid",
+
+                isDarkMode
+                  ? "border-[#2d3135] bg-[#1d1f21] text-[#e5e7eb]"
+                  : "border-[#e5e7eb] bg-white",
+              )}
+            >
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 border-none text-center"
+              >
                 No results.
               </TableCell>
             </TableRow>
@@ -79,8 +113,10 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <div className="flex flex-row px-6 items-center justify-between">
-        <div className="text-muted-foreground flex-1 text-sm">
+      <div className="flex flex-row items-center justify-between px-6">
+        <div
+          className={`text-muted-foreground flex-1 text-sm ${isDarkMode ? "text-[#e5e7eb]" : ""}`}
+        >
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
@@ -88,6 +124,7 @@ export function DataTable<TData, TValue>({
         {/* Pagination */}
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
+            className={`${isDarkMode ? "text-[#e5e7eb]" : ""}`}
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
@@ -96,6 +133,7 @@ export function DataTable<TData, TValue>({
             Previous
           </Button>
           <Button
+            className={`${isDarkMode ? "text-[#e5e7eb]" : ""}`}
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}

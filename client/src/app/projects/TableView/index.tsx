@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { useGetTasksQuery } from "@/state/api";
 import { DataTable } from "./DataTable";
-// import { useTheme } from "next-themes";
+import { useTheme } from "next-themes";
 import { columns } from "./DataTable/columns";
 
 type TableViewProps = {
@@ -10,9 +10,9 @@ type TableViewProps = {
 };
 
 const TableView = ({ id, setIsModalNewTaskOpen }: TableViewProps) => {
-  //   const { theme } = useTheme();
+  const { theme } = useTheme();
 
-  //   const isDarkMode = theme === "dark";
+  const isDarkMode = theme === "dark";
 
   const {
     data: tasks,
@@ -40,7 +40,7 @@ const TableView = ({ id, setIsModalNewTaskOpen }: TableViewProps) => {
         />
       </div>
       {/* Place the table! */}
-      <DataTable columns={columns} data={tasks} />
+      <DataTable columns={columns} data={tasks} isDarkMode={isDarkMode} />
     </div>
   );
 };

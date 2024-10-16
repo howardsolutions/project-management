@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
+
 import Modal from "@/components/Modal";
 import { Priority, Status, useCreateTaskMutation } from "@/state/api";
 import React, { useState } from "react";
 import { formatISO } from "date-fns";
+import toast from "react-hot-toast";
 
 const ModalCreateNewTask = ({
   isOpen,
@@ -21,7 +25,7 @@ const ModalCreateNewTask = ({
   const [projectId, setProjectId] = useState("");
 
   const handleSubmit = async () => {
-    if (!title || !authorUserId || !(id !== null || projectId)) return;
+    if (!title || !authorUserId || !startDate || !dueDate) return;
 
     const formattedStartDate = formatISO(new Date(startDate), {
       representation: "complete",
@@ -29,19 +33,26 @@ const ModalCreateNewTask = ({
     const formattedDueDate = formatISO(new Date(dueDate), {
       representation: "complete",
     });
-
-    await createTask({
-      title,
-      description,
-      status,
-      priority,
-      tags,
-      startDate: formattedStartDate,
-      dueDate: formattedDueDate,
-      authorUserId: parseInt(authorUserId),
-      assignedUserId: parseInt(assignedUserId),
-      projectId: id !== null ? Number(id) : Number(projectId),
-    });
+    try {
+      await createTask({
+        title,
+        description,
+        status,
+        priority,
+        tags,
+        startDate: formattedStartDate,
+        dueDate: formattedDueDate,
+        authorUserId: parseInt(authorUserId),
+        assignedUserId: parseInt(assignedUserId),
+        projectId: id !== null ? Number(id) : Number(projectId),
+      });
+      onClose();
+      toast.success(`A new task created successfully!`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err)
+      toast.error("Something went wrong");
+    }
   };
 
   const isFormValid = () => {

@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import Modal from "@/components/Modal";
 import { useCreateProjectMutation } from "@/state/api";
 import React, { useState } from "react";
 import { formatISO } from "date-fns";
+import toast from "react-hot-toast";
 
 type ModalCreateNewProjectProps = {
   isOpen: boolean;
@@ -28,12 +32,20 @@ const ModalCreateNewProject = ({
       representation: "complete",
     });
 
-    await createProject({
-      name: projectName,
-      description,
-      startDate: formattedStartDate,
-      endDate: formattedEndDate,
-    });
+    try {
+      await createProject({
+        name: projectName,
+        description,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+      onClose();
+      toast.success(`A new project created successfully!`);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: any) {
+      toast.error("Something went wrong");
+    }
   };
 
   const isFormValid = () => {

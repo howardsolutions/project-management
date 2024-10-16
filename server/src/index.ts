@@ -10,6 +10,7 @@ import projectRoutes from "./routes/projectRoute";
 import taskRoutes from "./routes/taskRoute";
 import searchRoute from "./routes/searchRoute";
 import userRoutes from "./routes/userRoute";
+import teamRoutes from "./routes/teamRoute"
 
 // Config ENV
 dotenv.config()
@@ -43,6 +44,8 @@ app.use("/tasks", taskRoutes);
 app.use("/search", searchRoute);
 app.use("/search", searchRoute);
 app.use("/users", userRoutes);
+app.use("/teams", teamRoutes);
+
 
 // SERVER
 const PORT = process.env.PORT || 4000;

@@ -13,12 +13,34 @@ exports.search = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { query } = req.query;
     try {
-        const { query } = req.query;
+        const tasks = yield prisma.task.findMany({
+            where: {
+                OR: [
+                    { title: { contains: query } },
+                    { description: { contains: query } }
+                ]
+            }
+        });
+        const projects = yield prisma.project.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query } },
+                    { description: { contains: query } }
+                ]
+            }
+        });
+        const users = yield prisma.user.findMany({
+            where: {
+                username: { contains: query }
+            }
+        });
+        res.json({ users, projects, tasks });
     }
     catch (err) {
         res.status(500).json({
-            message: `Error retrieving projects ${err.message}`
+            message: `Error perform searching ${err.message}`
         });
     }
 });

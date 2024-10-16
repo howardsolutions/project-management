@@ -12,6 +12,7 @@ const morgan_1 = __importDefault(require("morgan"));
 // ROUTES import
 const projectRoute_1 = __importDefault(require("./routes/projectRoute"));
 const taskRoute_1 = __importDefault(require("./routes/taskRoute"));
+const searchRoute_1 = __importDefault(require("./routes/searchRoute"));
 // Config ENV
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 app.use("/projects", projectRoute_1.default);
 app.use("/tasks", taskRoute_1.default);
+app.use("/search", searchRoute_1.default);
 // SERVER
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));

@@ -7,7 +7,7 @@ export const search = async (req: Request, res: Response): Promise<void> => {
     const { query } = req.query;
 
     try {
-        const tasks = prisma.task.findMany({
+        const tasks = await prisma.task.findMany({
             where: {
                 OR: [
                     { title: { contains: query as string } },
@@ -16,7 +16,7 @@ export const search = async (req: Request, res: Response): Promise<void> => {
             }
         });
 
-        const projects = prisma.project.findMany({
+        const projects = await prisma.project.findMany({
             where: {
                 OR: [
                     { name: { contains: query as string } },
@@ -25,13 +25,13 @@ export const search = async (req: Request, res: Response): Promise<void> => {
             }
         })
 
-        const users = prisma.user.findMany({
+        const users = await prisma.user.findMany({
             where: {
                 username: { contains: query as string }
             }
         })
 
-        Promise.all([tasks, projects, users]).then(values => res.json({ values }))
+        res.json({ users, projects, tasks });
     } catch (err: any) {
         res.status(500).json({
             message: `Error perform searching ${err.message}`

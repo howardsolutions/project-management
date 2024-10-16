@@ -2,30 +2,23 @@
 
 import { ProjectCard, TaskCard, UserCard } from "@/components";
 import Header from "@/components/Header";
+import { useDebounce } from "@/hooks";
 
 import { useSearchQuery } from "@/state/api";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
+
+  const debouncedSearchValue = useDebounce(searchTerm);
+
   const {
     data: searchResults,
     isLoading,
     isError,
-  } = useSearchQuery(searchTerm, {
-    skip: searchTerm.length < 3,
+  } = useSearchQuery(debouncedSearchValue, {
+    skip: debouncedSearchValue.length < 3 || debouncedSearchValue == "",
   });
-
-  const handleSearch = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
-    },
-    500,
-  );
-
-  useEffect(() => {
-    return handleSearch.cancel;
-  }, [handleSearch.cancel]);
 
   return (
     <div className="p-8">
@@ -35,7 +28,7 @@ const Search = () => {
           type="text"
           placeholder="Search..."
           className="w-1/2 rounded border p-3 shadow"
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
       <div className="p-5">
